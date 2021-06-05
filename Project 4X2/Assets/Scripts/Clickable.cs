@@ -7,16 +7,12 @@ namespace Project4X2
 {
     public class Clickable : MonoBehaviour
     {
-        protected virtual void Clicked()
+        public bool Selected;
+        public void SetIsSelected(bool value) { Selected = value; }
+
+        public virtual void Clicked()
         {
 
         }
-
-        private void OnMouseDown()
-        {
-            Debug.Log(name + " Clicked");
-            Clicked();
-        }
-
     }
 }

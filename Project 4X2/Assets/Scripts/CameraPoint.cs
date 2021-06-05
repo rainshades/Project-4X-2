@@ -8,8 +8,10 @@ namespace Project4X2
     {
         CamActions CameraMovement;
 
+        [Range(-25, 25)]
         public float CameraMoveSpeed;
-        CharacterController cc; 
+        CharacterController cc;
+        Vector3 MovementVector; 
 
         private void Awake()
         {
@@ -17,18 +19,25 @@ namespace Project4X2
             CameraMovement = new CamActions();
             CameraMovement.CameraMovement.Movement.performed += Movement_performed;
             CameraMovement.CameraMovement.Scroll.performed += Scroll_performed;
+
+            CameraMovement.CameraMovement.Movement.canceled += ctx => MovementVector = Vector3.zero;
+            CameraMovement.CameraMovement.Scroll.canceled += ctx => MovementVector = Vector3.zero;
         }
+
+        private void Update()
+        {
+            cc.Move(MovementVector * -CameraMoveSpeed * Time.deltaTime);
+        }
+
 
         private void Scroll_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
         {
-            Vector3 MovementVector = new Vector3 (0, obj.ReadValue<float>() / 2, 0);
-            cc.Move(MovementVector);
+            MovementVector = new Vector3 (0, obj.ReadValue<float>() / 2, 0);
         }
 
         private void Movement_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
         {
-            Vector3 MovementVector = new Vector3 (obj.ReadValue<Vector2>().x, 0, obj.ReadValue<Vector2>().y);
-            cc.Move(MovementVector * -CameraMoveSpeed);
+            MovementVector = new Vector3 (obj.ReadValue<Vector2>().x, 0, obj.ReadValue<Vector2>().y);
         }
 
         private void OnEnable()

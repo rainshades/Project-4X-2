@@ -1,0 +1,38 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI; 
+
+namespace Project4X2
+{
+    public class BattleCard : MonoBehaviour, IPointerClickHandler
+    {
+        public BattleUnit unit;
+        public bool selected; 
+        [SerializeField]
+        Image UnitArt, Selected;
+
+        public void Select()
+        {
+            unit.Clicked();
+        }
+        
+        private void Update()
+        {
+            Selected.gameObject.SetActive(selected);
+        }
+
+        public void CreateCard(BattleUnit unit)
+        {
+            this.unit = unit;
+            UnitArt.sprite = unit.BaseStats.UnitCard;
+        }
+
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            Debug.Log("Clicked");
+            Select();
+        }
+    }
+}

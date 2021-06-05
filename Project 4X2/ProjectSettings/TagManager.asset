@@ -8,6 +8,8 @@ TagManager:
   - Player Unit
   - Enemy Unit
   - Cover
+  - NPF
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -18,9 +20,9 @@ TagManager:
   - Player
   - Enemy
   - Cover
-  - 
-  - 
-  - 
+  - Settlement
+  - BattleUnit
+  - WalkingZone
   - 
   - 
   - 

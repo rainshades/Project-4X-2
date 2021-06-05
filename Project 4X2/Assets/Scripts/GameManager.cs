@@ -9,11 +9,11 @@ namespace Project4X2
     {
         [SerializeField]
         string BattleScene; //Variation battle scene based on location
-
-        public static GameManager Instance { get => FindObjectOfType<GameManager>(); }
+        public static GameManager Instance;
 
         private void Awake()
         {
+            Instance = this; 
             DontDestroyOnLoad(this);
         }
 
@@ -23,5 +23,9 @@ namespace Project4X2
              SceneManager.LoadScene(BattleScene);
         }
 
+        public void LoadOverworldScene()
+        {
+            SceneManager.LoadScene(0);
+        }
     }
 }
