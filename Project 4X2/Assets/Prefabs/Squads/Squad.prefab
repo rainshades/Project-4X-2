@@ -70,9 +70,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Selected: 0
-  BaseStats: {fileID: 11400000, guid: cc7ea2d086dab3b40821c1b9beb89583, type: 2}
+  UnitNumber: 0
+  SquadNumber: 0
+  BaseStats: {fileID: 11400000, guid: f00f1c50fc5bcd8408201d37df9af8a5, type: 2}
   Enemy: 0
   Battle_Started: 0
+  Buac: {fileID: 0}
   AttackTarget: {fileID: 0}
   EnemyLayer:
     serializedVersion: 2
@@ -332,7 +335,7 @@ MonoBehaviour:
     m_Bits: 4294967295
   centerOffsetCompatibility: NaN
   orientation: 0
-  enableRotation: 1
+  enableRotation: 0
   targetCompatibility: {fileID: 0}
   maxAcceleration: -2.5
   rotationSpeed: 360

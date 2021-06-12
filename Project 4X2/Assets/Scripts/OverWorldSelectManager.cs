@@ -35,7 +35,8 @@ namespace Project4X2
 
         private void Awake()
         {
-            Instance = this; 
+            Instance = this;
+            //GameState.Instance.LoadAudoSave();
         }
 
         private void Start()
@@ -47,32 +48,6 @@ namespace Project4X2
         {
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hitData;
-
-            if (Mouse.current.leftButton.wasPressedThisFrame)
-            {
-                try
-                {
-                    OverworldUnit OW = CurrentSelection as OverworldUnit;
-                    OW.Movement.TurnOffNotifier();
-                }
-                catch { Debug.Log("No Current Selected"); }
-
-                if (Physics.Raycast(ray, out hitData, 10000, ClickableMasks)){
-
-                    try
-                    {
-                        CurrentSelection = hitData.transform.gameObject.GetComponent<Clickable>();
-                        CurrentSelection.Clicked();
-                        Debug.Log("Clicked");
-                    } catch { }
-                }
-                else
-                {
-
-                    CurrentSelection = null;
-                    OverWorldUIController.Instance.HideDeck();
-                }
-            }
 
             if (Mouse.current.rightButton.wasReleasedThisFrame)
             {
@@ -115,12 +90,12 @@ namespace Project4X2
                         {
                             GameObject fab = Instantiate(ArmyPrefab);
                             fab.transform.position = OS.SpawnPoint.position;
-                            fab.GetComponent<Army>().AssignTag(OS.Owner == FactionManager.instance.PlayerFaction);
+                            fab.GetComponent<AttatchedArmy>().AssignTag(OS.Owner == FactionManager.instance.PlayerFaction);
                             foreach(GameObject unit in OverWorldUIController.Instance.GetComponentInChildren<ArmyUI>().SelectedCards)
                             {
-                                Unit selectedUnit = unit.GetComponent<UnitCard>().recruit; 
-                                fab.GetComponent<Army>().Units.Add(selectedUnit);
-                                OS.GetComponent<Army>().Disband(selectedUnit);
+                                BaseRecruitableUnit selectedUnit = unit.GetComponent<UnitCard>().recruit; 
+                                fab.GetComponent<AttatchedArmy>().Army.Add(selectedUnit);
+                                OS.GetComponent<AttatchedArmy>().Disband(selectedUnit);
                             }
 
                             OverWorldUIController.Instance.GetComponentInChildren<ArmyUI>().RemoveArmy();
@@ -166,7 +141,6 @@ namespace Project4X2
 
             //Where RightClick on Pathfindable Terrain
             //CurrentSelection.Destination
-
         }
         IEnumerator DestroyObject(GameObject gameObject)
         {

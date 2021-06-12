@@ -9,7 +9,7 @@ namespace Project4X2
 {
     public class UnitCard : MonoBehaviour, IPointerClickHandler
     {
-        public Unit recruit;
+        public BaseRecruitableUnit recruit;
         protected bool selected;
         [SerializeField]
         protected Image UnitArt, Selected;
@@ -24,7 +24,7 @@ namespace Project4X2
             Selected.gameObject.SetActive(selected); 
         }
 
-        public virtual void CreateCard(Unit recruit)
+        public virtual void CreateCard(BaseRecruitableUnit recruit)
         {
             this.recruit = recruit; 
             UnitArt.sprite = recruit.UnitCard;

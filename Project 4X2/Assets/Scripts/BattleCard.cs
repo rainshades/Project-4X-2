@@ -23,9 +23,15 @@ namespace Project4X2
             Selected.gameObject.SetActive(selected);
         }
 
+        void DestroyCard()
+        {
+            Destroy(gameObject); 
+        }
+
         public void CreateCard(BattleUnit unit)
         {
             this.unit = unit;
+            unit.HappensOnDeath += DestroyCard;
             UnitArt.sprite = unit.BaseStats.UnitCard;
         }
 

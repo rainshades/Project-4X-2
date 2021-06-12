@@ -18,10 +18,10 @@ namespace Project4X2
             instance = this;
 
             int UnitColumn = 0;
-            int UnitRow = 0;
-            foreach (Unit unit in BattleTransition.instance.PlayerArmy.Units)
+            int UnitNumber = 0;
+            int SquadNumber = 0;
+            foreach (ArmyUnits unit in BattleTransition.instance.PlayerArmy.Units)
             {   
-
                 foreach (Squad squad in unit.Squads)
                 {
                     GameObject go; 
@@ -44,19 +44,26 @@ namespace Project4X2
                     go.GetComponentInChildren<BattleUnit>().Battle_Started = false;
                     go.GetComponent<AIPath>().maxSpeed = squad.Soldiers[0].speed; 
                     go.GetComponentInChildren<BattleUnit>().gameObject.tag = "Player Unit";
-                    
+                    go.GetComponentInChildren<BattleUnit>().UnitNumber = UnitNumber;
+                    go.GetComponentInChildren<BattleUnit>().SquadNumber = SquadNumber;
+
                     AllyArmy.battleUnits.Add(go.GetComponentInChildren<BattleUnit>());
                     LastSquadSpawned = go.transform;
-                    UnitColumn++; 
+                    UnitColumn++;
+                    SquadNumber++;
                 }
+                SquadNumber = 0; 
+                UnitNumber++;
             }
 
             UnitColumn = 0;
-            UnitRow = 0; 
-            LastSquadSpawned = null; 
+            LastSquadSpawned = null;
 
-            foreach (Unit unit in BattleTransition.instance.EnemyArmy.Units)
+            UnitNumber = 0;
+            SquadNumber = 0;
+            foreach (ArmyUnits unit in BattleTransition.instance.EnemyArmy.Units)
             {
+               
                 foreach (Squad squad in unit.Squads)
                 {
                     GameObject go; 
@@ -79,12 +86,19 @@ namespace Project4X2
 
                     go.GetComponentInChildren<BattleUnit>().Battle_Started = false;
                     go.GetComponentInChildren<BattleUnit>().gameObject.tag = "Enemy Unit";
+                    go.GetComponentInChildren<BattleUnit>().UnitNumber = UnitNumber;
+                    go.GetComponentInChildren<BattleUnit>().SquadNumber = SquadNumber;
+
                     go.GetComponent<AIPath>().maxSpeed = squad.Soldiers[0].speed;
                     EnemyArmy.battleUnits.Add(go.GetComponentInChildren<BattleUnit>());
                     
                     LastSquadSpawned = go.transform;
                     UnitColumn++; 
+                    SquadNumber++;
                 }
+
+                SquadNumber = 0;
+                UnitNumber++; 
             }
         
             ArmyBattleDeckUI.instance.SpawnUnitCards();
@@ -107,8 +121,5 @@ namespace Project4X2
             }
 
         }
-        //Remove units from the list as they die in battle. Remove their cards from the card deck if they were ally cards
-        //When one of the armies List is empty the battle is over and you go out to the main menu. 
-    }
-
+      }
 }

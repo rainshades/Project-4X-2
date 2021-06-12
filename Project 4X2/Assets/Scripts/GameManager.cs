@@ -14,18 +14,30 @@ namespace Project4X2
         private void Awake()
         {
             Instance = this; 
+            if(FindObjectsOfType<GameManager>().Length > 1)
+            {
+                Destroy(FindObjectsOfType<GameManager>()[1].gameObject);
+            }
             DontDestroyOnLoad(this);
+        }
+
+        public void LoadOverworld()
+        {
+            SceneManager.LoadScene(0);
         }
 
 
         public void LoadBattleScene()
         {
-             SceneManager.LoadScene(BattleScene);
+            GameState.Instance.AutoSave();
+            SceneManager.LoadScene(BattleScene);
         }
 
-        public void LoadOverworldScene()
+
+        public void LoadOverworldSceneAfterBattle()
         {
             SceneManager.LoadScene(0);
+            //Battle casualities
         }
     }
 }

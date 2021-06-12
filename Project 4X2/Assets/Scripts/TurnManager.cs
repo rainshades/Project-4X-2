@@ -5,6 +5,7 @@ using TMPro;
 
 namespace Project4X2
 {
+
     public class TurnManager : MonoBehaviour
     {
         public int TurnNumber = 0;
@@ -17,13 +18,15 @@ namespace Project4X2
         private void Start()
         {
             SeasonText.text = "Winter";
+            BankText.text = FactionManager.instance.PlayerFaction.bank + "";
         }
 
         public void NextTurn()
-        {
+        {   
             FactionManager.instance.PlayerFaction.GainRevenue();
             BankText.text = FactionManager.instance.PlayerFaction.bank + "";
-
+            GameState.Instance.AutoSave(); 
+            
             TurnNumber++;
             NumberText.text = "" + TurnNumber;
             switch (CurrentSeason)

@@ -1,12 +1,18 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using Pathfinding; 
+using Pathfinding;
 
 namespace Project4X2
 {
     public class BattleUnit : Clickable
     { //So far everything here only applies to simple infintry 
-        public Unit BaseStats;
+
+        public delegate void OnDeath();
+
+        public OnDeath HappensOnDeath;
+
+        public int UnitNumber, SquadNumber; 
+        public BaseRecruitableUnit BaseStats;
         bool fired = false;
         public bool Enemy, Battle_Started;
         public BattleUnitAnimationController Buac; 
@@ -23,8 +29,6 @@ namespace Project4X2
 
         float MaxHealth, health, reload_speed, reload_timer;
 
-        List<GameObject> Units = new List<GameObject>(); 
-
         ///float implementations still needed:
         ///Moral,fetigue, ammo, armor lvl, 
 
@@ -37,20 +41,15 @@ namespace Project4X2
             reload_speed = BaseStats.Squads[0].Soldiers[0].reload_Speed;
             reload_timer = reload_speed; 
 
-            for(int i =0; i < transform.childCount; i++)
-            {
-                if (transform.GetChild(i).TryGetComponent(out AIPath path))
-                {
-                    Units.Add(transform.GetChild(i).gameObject);
-                }
-            }
-            
+            HappensOnDeath = new OnDeath(Die); 
+
             destination = GetComponent<AIDestinationSetter>();
+
         }
 
         private void Update()
         {
-            AttackTarget = GetAttackTarget();
+            AttackTarget = GetNearbyUnits();
 
             if (AttackTarget != null)
             {
@@ -94,19 +93,27 @@ namespace Project4X2
 
             if(health <= 0)
             {
-                gameObject.SetActive(false); 
-                if(transform.tag == "Player Unit")
-                {
-                    UnitSpawner.instance.AllyArmy.battleUnits.Remove(this);
-
-                } else if(transform.tag == "Enemy Unit")
-                {
-                    UnitSpawner.instance.EnemyArmy.battleUnits.Remove(this);
-                }
+                HappensOnDeath.Invoke(); 
             }
         }
 
-        BattleUnit GetAttackTarget()
+        public void Die()
+        {
+            //gameObject.SetActive(false);
+            if (transform.tag == "Player Unit")
+            {
+                BattleTransition.instance.UnitDies(this);
+                UnitSpawner.instance.AllyArmy.battleUnits.Remove(this);
+            }
+            else if (transform.tag == "Enemy Unit")
+            {
+                BattleTransition.instance.UnitDies(this); 
+                UnitSpawner.instance.EnemyArmy.battleUnits.Remove(this);
+            }
+            Destroy(gameObject); 
+        }
+
+        BattleUnit GetNearbyUnits()
         {
             Collider[] colliders = Physics.OverlapSphere(transform.parent.transform.position, BaseStats.Squads[0].Soldiers[0].range, EnemyLayer);
             foreach (Collider col in colliders)
@@ -156,13 +163,13 @@ namespace Project4X2
 
             for (int i = 0;  i <= Dice; i++)
             {
-                Damage += Random.Range(0, 3);
+                Damage += Random.Range(0, 3); // roll based on squad stats in accuracy/luvk etc
             }
 
             unit.TakeDamage(Damage); 
 
-            Debug.Log(Dice + " rolls" ); 
-            Debug.Log(Damage + " damage" );
+            //Debug.Log(Dice + " rolls" ); 
+            //Debug.Log(Damage + " damage" );
         }
 
         private void OnDrawGizmos()

@@ -6,13 +6,13 @@ namespace Project4X2
 {
     public class Recruitment : MonoBehaviour
     {
-        public List<Unit> RecruitableUnits;
+        public List<BaseRecruitableUnit> RecruitableUnits;
         [SerializeField]
-        Army Army;
+        AttatchedArmy Army;
         [SerializeField]
         GameObject UnitCardPrefab; 
 
-        public void Recruit(Unit recruit)
+        public void Recruit(BaseRecruitableUnit recruit)
         {
             Army.Recruit(recruit); 
         } 
@@ -22,15 +22,11 @@ namespace Project4X2
             if (OverWorldSelectManager.Instance.CurrentSelection is Settlement)
             {
                 Settlement ow = OverWorldSelectManager.Instance.CurrentSelection as Settlement;
-                Army = ow.GetComponent<Army>();
-            }
-            else
-            {
-                OverworldUnit ow = OverWorldSelectManager.Instance.CurrentSelection as OverworldUnit;
-                Army = ow.GetComponentInParent<Army>();
+                Army = ow.GetComponent<AttatchedArmy>();
+                RecruitableUnits = ow.Owner.RecruitableUnits; 
             }
 
-            foreach (Unit recruit in RecruitableUnits)
+            foreach (BaseRecruitableUnit recruit in RecruitableUnits)
             {
                 GameObject go = Instantiate(UnitCardPrefab, transform);
                 go.GetComponent<UnitCard>().CreateCard(recruit); 

@@ -12,10 +12,8 @@ namespace Project4X2
         public void ExitBattleScene()
         {
             BattleTransition.instance.ReturnFromBattle();
+            BattleTransition.instance.PostBattle = true; 
         }
-
-
-
 
         private void Update()
         {

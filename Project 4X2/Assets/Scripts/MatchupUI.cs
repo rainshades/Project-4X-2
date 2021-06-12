@@ -12,8 +12,25 @@ namespace Project4X2
         public static MatchupUI instance;
         private void Awake()
         {
-            instance = this; 
+            instance = this;
+
+            if (BattleTransition.instance.PostBattle)
+            {
+                BattleTransition.instance.PostMatchMenu(gameObject);
+                transform.GetChild(2).gameObject.SetActive(false);
+                transform.GetChild(3).gameObject.SetActive(true);
+            }
         }
 
+        public void StartBattle()
+        {
+            BattleTransition.instance.Battle(); 
+        }
+
+        public void CloseStatsWindow()
+        {
+            BattleTransition.instance.PostBattle = false; 
+            gameObject.SetActive(false); 
+        }
     }
 }

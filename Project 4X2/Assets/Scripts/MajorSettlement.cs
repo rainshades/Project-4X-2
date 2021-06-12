@@ -8,7 +8,6 @@ namespace Project4X2
         private void Awake()
         {
             BuildingSlots = new BuildingSlot[5];
-
         }
     }
 }

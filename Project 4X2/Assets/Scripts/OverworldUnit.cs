@@ -12,13 +12,12 @@ namespace Project4X2
         public AudioClip MoveingAudio;
 
         public LayerMask EnemyLayers;
-        public int AttackStrength, Health;
+        public int AttackStrength;
         public float AttackRange, MoveSpeed;
         public bool Moving, EnemyInRange, AttackMove, CombineMove, Sieging;
 
         public Animator Ani;
         public OverWorldMovement Movement; 
-
 
         private void Awake()
         {
@@ -33,12 +32,13 @@ namespace Project4X2
             {
                 Movement.MoveCounter(GetComponentInParent<AIPath>().endReachedDistance);
 
-                Moving = !GetComponentInParent<AIPath>().reachedDestination;
+                Moving = !GetComponentInParent<AIPath>().reachedDestination && Movement.movement_range > 0;
             }
             else
             {
+                GetComponentInParent<AIPath>().destination = transform.parent.position;
                 Ani.SetTrigger("Idle");
-            }
+            }            
         }
 
         public void MakeCombineMove(Clickable friendly)
@@ -62,7 +62,7 @@ namespace Project4X2
             {
                 OverWorldUIController.Instance.ArmyClicked(this);
                 OverWorldSelectManager.Instance.CurrentSelection = this;
-                OverWorldUIController.Instance.GetComponentInChildren<ArmyUI>().OpenArmyUI(GetComponentInParent<Army>());
+                OverWorldUIController.Instance.GetComponentInChildren<ArmyUI>().OpenArmyUI(GetComponentInParent<AttatchedArmy>().Army);
                 Movement.TurnOnNotifier();
 
                 if (OverWorldSelectManager.Instance.CurrentSelection != this)

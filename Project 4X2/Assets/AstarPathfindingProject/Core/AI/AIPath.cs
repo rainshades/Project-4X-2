@@ -268,15 +268,7 @@ namespace Pathfinding {
 		/// So when the agent is close to the destination this method will typically be called every <see cref="repathRate"/> seconds.
 		/// </summary>
 		public virtual void OnTargetReached () {
-			StartCoroutine(DestinationFinished());
 		}
-
-		IEnumerator DestinationFinished()
-        {
-			yield return new WaitForSecondsRealtime(0.05f);
-			reachedEndOfPath = false; 
-        }
-		
 
 		/// <summary>
 		/// Called when a requested path has been calculated.

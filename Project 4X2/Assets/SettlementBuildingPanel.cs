@@ -14,12 +14,14 @@ namespace Project4X2
         {
             Settlement OS = OverWorldSelectManager.Instance.CurrentSelection as Settlement;
             int iterator = 0; 
+
             foreach (BuildingSlot BS in OS.BuildingSlots)
             {
                 GameObject go = Instantiate(BuildingSlotPrefab, transform);
                 try
                 {
-                    go.GetComponent<BuildingSlot>().CurrentBuilding = BS.CurrentBuilding;
+                    go.GetComponent<BuildingSlot>().CurrentBuilding = OS.BM.BuiltBuildings[iterator];
+                    go.GetComponent<BuildingSlot>().CreateBuildingSprite();
                 }
                 catch
                 {

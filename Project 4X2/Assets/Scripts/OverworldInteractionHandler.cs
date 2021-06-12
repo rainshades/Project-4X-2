@@ -7,8 +7,14 @@ namespace Project4X2
 {
     public class OverworldInteractionHandler : MonoBehaviour
     {
-        [SerializeField] LayerMask FriendlySettlements; 
+        [SerializeField] LayerMask FriendlySettlements;
 
+        public AttatchedArmy OverworldArmy;
+
+        private void Awake()
+        {
+            OverworldArmy = GetComponentInParent<AttatchedArmy>();
+        }
         private void OnTriggerEnter(Collider other)
         {
             switch (other.tag){
@@ -17,8 +23,15 @@ namespace Project4X2
                     if (GetComponent<OverworldUnit>().AttackMove)
                     {
                         //GameManager.Instance.LoadBattleScene();
-                        BattleTransition.instance.PlayerArmy = GetComponentInParent<Army>();
-                        BattleTransition.instance.EnemyArmy = other.GetComponentInParent<Army>();
+                        BattleTransition.instance.PlayerArmy = OverworldArmy.Army;
+                        BattleTransition.instance.EnemyArmy = other.GetComponentInParent<AttatchedArmy>().Army;
+
+                        BattleTransition.instance.PlayerArmyNumber = OverworldArmy.ArmyNumber;
+                        BattleTransition.instance.EnemyArmyNumber = other.GetComponentInParent<AttatchedArmy>().ArmyNumber;
+
+                        BattleTransition.instance.PlayerFaciton = OverworldArmy.Owner;
+                        BattleTransition.instance.EnemyFaction = other.GetComponentInParent<AttatchedArmy>().Owner;
+
                         BattleTransition.instance.ShowMatchupMenu(MatchupUI.instance.gameObject);
                         GetComponent<OverworldUnit>().AttackMove = false; 
                     }
@@ -29,16 +42,22 @@ namespace Project4X2
                         if (Physics.CheckSphere(transform.position, 1.0f, FriendlySettlements))
                         {
                             Collider[] colliders = Physics.OverlapSphere(transform.position, 1.0f, FriendlySettlements);
-                            GetComponentInParent<Army>().Combine(colliders[0].GetComponent<Army>());
+                            OverworldArmy.Combine(colliders[0].GetComponent<AttatchedArmy>().Army);
                             OverWorldUIController.Instance.SettlementClicked(colliders[0].GetComponent<Settlement>());
                         }
                     }
                     break;
-                case "NPF":
+                case "NPF": //NPF - Non-player faction (city)
                     if (GetComponent<OverworldUnit>().AttackMove)
                     {
                         other.GetComponent<Settlement>().UnderSiege = true;
                         GetComponent<OverworldUnit>().Sieging = true;
+
+                        if(other.GetComponent<AttatchedArmy>().Army.Units.Count < 1)
+                        {
+                            other.GetComponent<Settlement>().Capture(OverworldArmy);
+                        }
+
                     }
                     break; 
                 default:

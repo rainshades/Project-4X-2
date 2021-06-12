@@ -5,17 +5,42 @@ using UnityEngine;
 
 namespace Project4X2
 {
-    public class Settlement : Clickable
+    [System.Serializable]
+    public class SettlementInfo
     {
         public Faction Owner;
 
-        bool siege = false;
+        public bool siege = false;
 
-        public bool UnderSiege { get => siege; set => siege = value; }
+        public int revenue, influence, order, population;
+
+        public Building[] buildings; 
+
+        public void SyncBuilding(BuildingSlot[] BuildingSlots)
+        {
+            buildings = new Building[BuildingSlots.Length];
+            int index = 0; 
+            foreach(BuildingSlot bs in BuildingSlots)
+            {
+                buildings[index] = bs.building; 
+            }
+        }
+    }
+
+    public class Settlement : Clickable
+    {
+        public SettlementInfo ThisSettlement = new SettlementInfo();
 
         public Transform SpawnPoint;
 
-        public int revenue, influence, order, population;
+        public bool UnderSiege { get => ThisSettlement.siege; set => ThisSettlement.siege = value; }
+
+        public Faction Owner { get => ThisSettlement.Owner;  }
+
+        public int revenue => ThisSettlement.revenue;
+        public int population => ThisSettlement.population;
+        public int order => ThisSettlement.order;
+        public int influence => ThisSettlement.influence; 
 
         public BuildingManager BM
         {
@@ -35,6 +60,16 @@ namespace Project4X2
         
         public BuildingSlot[] BuildingSlots;
 
+        private void Awake()
+        {
+            int index = 0; 
+            foreach(BuildingSlot bs in BuildingSlots)
+            {
+                bs.building = ThisSettlement.buildings[index];
+            }
+        }
+
+
         public override void Clicked()
         {
             base.Clicked();
@@ -42,9 +77,16 @@ namespace Project4X2
             OverWorldUIController.Instance.SettlementClicked(this);
         }
 
+        public void Capture(AttatchedArmy faction)
+        {
+            ThisSettlement.Owner = faction.Owner;
+            faction.Combine(GetComponent<AttatchedArmy>().Army);
+            Debug.Log("Settlement Captured by" + faction.Owner);
+        }
+
         private void Update()
         {
-            if (Owner.Player)
+            if (ThisSettlement.Owner.Player)
             {
                 transform.tag = "Player";
             }
@@ -52,6 +94,7 @@ namespace Project4X2
             {
                 transform.tag = "NPF";
             }
+
         }
 
     }

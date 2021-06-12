@@ -14,5 +14,18 @@ namespace Project4X2
         {
 
         }
+
+        private void OnMouseDown()
+        {
+            try
+            {
+                OverworldUnit OW = OverWorldSelectManager.Instance.CurrentSelection as OverworldUnit;
+                OW.Movement.TurnOffNotifier();
+            }
+            catch { Debug.Log("No Current Selected"); }
+
+            Clicked();
+
+        }
     }
 }

@@ -6,8 +6,7 @@ namespace Project4X2
 {
     [CreateAssetMenu(fileName = "New Faction", menuName = "Faction")]
     public class Faction : ScriptableObject
-    {
-        
+    {   
         public bool Player; 
 
         public int bank;
@@ -17,7 +16,8 @@ namespace Project4X2
         public List<Faction> Allies;
 
         public List<Settlement> Territory;
-        public List<Building> PossibleBuildings; 
+        public List<BuildingSO> PossibleBuildings;
+        public List<BaseRecruitableUnit> RecruitableUnits; 
 
         public void CalculateIncome()
         {

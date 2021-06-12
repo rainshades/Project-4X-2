@@ -18,10 +18,10 @@ namespace Project4X2
                 RemoveArmy();
             }
 
-            foreach(Unit units in ArmyToShow.Units)
+            foreach(ArmyUnits units in ArmyToShow.Units)
             {
                 GameObject go = Instantiate(ArmyCards, transform);
-                go.GetComponent<UnitCard>().CreateCard(units);
+                go.GetComponent<UnitCard>().CreateCard(units.Base);
             }
         }
 

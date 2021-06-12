@@ -9,6 +9,7 @@ namespace Project4X2
     {
         public List<BattleUnit> battleUnits;
         BattleUI BUI;
+        public Dictionary<BaseRecruitableUnit, int> Casualties; 
 
         private void Awake()
         {
@@ -23,5 +24,6 @@ namespace Project4X2
                 BUI.BattleMenu.gameObject.SetActive(true);
             }
         }
+
     }
 }

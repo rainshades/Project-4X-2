@@ -29,12 +29,12 @@ namespace Project4X2
             if(OverWorldSelectManager.Instance.CurrentSelection is Settlement)
             {
                 Settlement ow = OverWorldSelectManager.Instance.CurrentSelection as Settlement;
-                armyUI.OpenArmyUI(ow.GetComponent<Army>());
+                armyUI.OpenArmyUI(ow.GetComponent<AttatchedArmy>().Army);
             }
             else
             {
                 OverworldUnit ow = OverWorldSelectManager.Instance.CurrentSelection as OverworldUnit;
-                armyUI.OpenArmyUI(ow.GetComponentInParent<Army>());
+                armyUI.OpenArmyUI(ow.GetComponentInParent<AttatchedArmy>().Army);
             }
         }
 
@@ -54,7 +54,7 @@ namespace Project4X2
             if(BuildingPanel.transform.childCount == 0)
             {
                 Settlement ow = OverWorldSelectManager.Instance.CurrentSelection as Settlement;
-                foreach (Building b in ow.BM.PossibleBuildings)
+                foreach (BuildingSO b in ow.BM.PossibleBuildings)
                 {
                     GameObject go = Instantiate(BuildingCardPrefab, BuildingPanel.transform);
                     go.GetComponent<BuildingCard>().building = b;

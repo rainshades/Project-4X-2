@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7f7b379d57075a4b9fc126b60f0423f, type: 3}
   m_Name: New Building
   m_EditorClassIdentifier: 
-  Sprite: {fileID: 21300000, guid: dea766f63b22fd34bb0bf6e63079cd71, type: 3}
-  tier: 0
-  turns_to_build: 5
+  Building:
+    Sprite: {fileID: 21300000, guid: dea766f63b22fd34bb0bf6e63079cd71, type: 3}
+    tier: 0
+    turns_to_build: 5
+    enabled: 0

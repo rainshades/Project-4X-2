@@ -7,21 +7,21 @@ namespace Project4X2
 {
     public class BuildingCard : MonoBehaviour, IPointerClickHandler
     {
-        public Building building;
+        public BuildingSO building;
         [SerializeField]
         TextMeshProUGUI text; 
 
         public void CreateCard()
         {
             text.text = building.name;
-            GetComponent<Image>().sprite = building.Sprite; 
+            GetComponent<Image>().sprite = building.Building.Sprite; 
         }
 
         public void OnPointerClick(PointerEventData eventData)
         {
             Settlement OS = OverWorldSelectManager.Instance.CurrentSelection as Settlement;
             OS.BM.SelectedBuildingSlot.CurrentBuilding = building;
-            OS.BM.SelectedBuildingSlot.CreateBuilding();
+            OS.BM.SelectedBuildingSlot.CreateBuildingSprite();
             OS.BM.BuiltBuildings.Add(building); 
         }
     }

@@ -4,49 +4,38 @@ using UnityEngine;
 
 namespace Project4X2
 {
-    public class Army : MonoBehaviour
+    [System.Serializable]
+    public struct ArmyUnits
     {
-        public List<Unit> Units;
-        public GameObject ArmyCard;
+        public BaseRecruitableUnit Base;
+        public List<Squad> Squads;
+        public GameObject SquadPrefab;
 
-        public Faction Owner;
+        public ArmyUnits(BaseRecruitableUnit Base)
+        {
+            Squads = new List<Squad>();
+            Squads.AddRange(Base.Squads); 
 
-        public void AssignTag(bool ownedByPlayer)
-        {
-            if (ownedByPlayer)
-            {
-                tag = "Player Unit";
-            }
-            else
-            {
-                tag = "Enemy Unit";
-            }
-        }
-
-        public int SoliderCount
-        {
-            get { return Units.Count * Units[0].Squads.Count * Units[0].Squads[0].Soldiers.Count; }
-        } 
-        public void Recruit(Unit unit)
-        {
-            Units.Add(unit);
-        }
-
-        public void Combine(Army SecondArmy)
-        {
-            SecondArmy.Units.AddRange(Units);
-            Destroy(gameObject);
-        }
-
-        public void Combine(Settlement Settlement)
-        {
-        }
-
-        public void Disband(Unit Unit)
-        {
-            Units.Remove(Unit);
+            this.Base = Base; this.SquadPrefab = Base.SquadPrefab;
         }
     }
 
 
+    [System.Serializable]
+    public class Army
+    {
+        public List<ArmyUnits> Units = new List<ArmyUnits>();
+
+        public void Add(BaseRecruitableUnit unit)
+        {
+            ArmyUnits NewRecruit = new ArmyUnits(unit);
+            Units.Add(NewRecruit);
+        }
+
+        public void Remove(BaseRecruitableUnit unit)
+        {
+            ArmyUnits Removable = new ArmyUnits(unit);
+            Units.Remove(Removable);
+        }
+    }
 }
