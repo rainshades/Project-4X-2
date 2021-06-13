@@ -35,6 +35,7 @@ namespace Project4X2
         private void Awake()
         {
             Buac = GetComponent<BattleUnitAnimationController>();
+            Buac.Idle(); 
             MaxHealth = BaseStats.Squads[0].Soldiers[0].health * BaseStats.Squads[0].Soldiers.Count;
             health = MaxHealth; 
 
@@ -62,6 +63,7 @@ namespace Project4X2
                     else
                     {
                         AttackTarget = null;
+                        Buac.Idle();
                     }
                 }
                 else if (transform.tag == "Enemy Unit")
@@ -73,6 +75,7 @@ namespace Project4X2
                     else
                     {
                         AttackTarget = null;
+                       Buac.Idle();
                     }
                 }
             }
@@ -153,6 +156,7 @@ namespace Project4X2
         {
             transform.LookAt(unit.transform);
             fired = true;
+            Buac.Fire(); 
             //Debug.Log("Attack" + unit.name);
 
             float Attack = BaseStats.Squads[0].Soldiers[0].attack;

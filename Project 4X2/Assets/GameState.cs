@@ -94,8 +94,11 @@ namespace Project4X2
             public List<SerializableVector3> ArmyLocations = new List<SerializableVector3>();
             public List<Army> ArmiesInGame = new List<Army>();
             public List<SettlementInfo> AllTheSettlementInfo = new List<SettlementInfo>();
+            public List<Faction> FactionInfo = new List<Faction>();
+            public TurnInfo LastTurnInfo = new TurnInfo(); 
         } //Dont' forget to update with all the data needed
 
+        [SerializeField]
         GameData MapData = new GameData(); 
 
         private void Awake()
@@ -114,7 +117,22 @@ namespace Project4X2
         {
             LocationData();
             ArmyData();
-            SettlementData(); 
+            SettlementData();
+            SaveFactionInfo();
+            SaveTurnInfo(); 
+        }
+
+        public void SaveTurnInfo()
+        {
+            MapData.LastTurnInfo = TurnManager.instance.Turninfo; 
+        }
+
+        public void SaveFactionInfo()
+        {
+            if (MapData.FactionInfo != null)
+                MapData.FactionInfo.Clear();
+
+            MapData.FactionInfo = FactionManager.instance.Factions; 
         }
 
         void LocationData()
@@ -146,7 +164,7 @@ namespace Project4X2
 
             foreach(Settlement settlement in FindObjectsOfType<Settlement>())
             {
-                settlement.ThisSettlement.SyncBuilding(settlement.BuildingSlots); 
+                settlement.GetComponent<BuildingManager>().SyncSettlementBuildings(); 
                 MapData.AllTheSettlementInfo.Add(settlement.ThisSettlement);
             }
         }
@@ -180,13 +198,41 @@ namespace Project4X2
             }
             catch { Debug.LogError("Error Loading"); }
 
-            int iterator = 0; 
+            int Piecesiterator = 0; 
             foreach(AIPath piece in FindObjectsOfType<AIPath>())
             {
-                piece.transform.position = MapData.ArmyLocations[iterator];
-                iterator++;
+                try
+                {
+                    piece.transform.position = MapData.ArmyLocations[Piecesiterator];
+                }
+                catch { Debug.Log("issue with on board piece" ); }
+                Piecesiterator++;                
             }
 
+            int ArmyIterator = 0;
+            foreach(AttatchedArmy Army in FindObjectsOfType<AttatchedArmy>())
+            {
+                try
+                {
+                    Army.Army = MapData.ArmiesInGame[ArmyIterator];
+                }
+                catch { Debug.Log("Error with Army assignment");  }
+                ArmyIterator++; 
+            }
+
+            int SettlementIterator = 0; 
+            foreach(Settlement settlement in FindObjectsOfType<Settlement>())
+            {
+                try
+                {
+                    settlement.ThisSettlement = MapData.AllTheSettlementInfo[SettlementIterator];
+                }
+                catch { Debug.Log("Error with Settlement Assignment"); }
+                SettlementIterator++; 
+            }
+
+            FactionManager.instance.Factions = MapData.FactionInfo;
+            TurnManager.instance.Turninfo = MapData.LastTurnInfo; 
         }
 
         public void AutoSave()
@@ -198,7 +244,5 @@ namespace Project4X2
         {
             Load("autosave");
         }
-
-
     }
 }

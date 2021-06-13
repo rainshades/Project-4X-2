@@ -73,6 +73,7 @@ namespace Project4X2
 
         public void SettlementClicked(Settlement settlement)
         {
+            HideDeck();
             ShowSettlementDeck();
             transform.GetChild(1).gameObject.SetActive(false); 
             transform.GetChild(0).GetChild(0).gameObject.SetActive(true);
@@ -83,6 +84,7 @@ namespace Project4X2
 
         public void ArmyClicked(OverworldUnit unit)
         {
+            HideDeck();
             ShowArmyDeck();
             transform.GetChild(0).gameObject.SetActive(false);  
             transform.GetChild(0).GetChild(0).gameObject.SetActive(false);

@@ -14,7 +14,13 @@ namespace Project4X2
 
         public void Recruit(BaseRecruitableUnit recruit)
         {
-            Army.Recruit(recruit); 
+            if (Army != null)
+            {
+                Army.Recruit(recruit);
+            }
+            else {
+                Army = GetComponent<AttatchedArmy>();
+                    Army.Recruit(recruit); }
         } 
 
         public void OpenRecruitmentMene()

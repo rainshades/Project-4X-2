@@ -5,19 +5,34 @@ using TMPro;
 
 namespace Project4X2
 {
+    public enum Season { Winter, Heavy_Winter, Spring, Summer, Heavy_Summer, Fall, Rainy }
+    
+    [System.Serializable]
+    public class TurnInfo
+    {
+        public Season CurrentSeason = Season.Winter;
+        public int TurnNumber = 0;
+    }
 
     public class TurnManager : MonoBehaviour
     {
-        public int TurnNumber = 0;
-        [SerializeField]TextMeshProUGUI NumberText, SeasonText, BankText; 
+        [SerializeField]TextMeshProUGUI NumberText, SeasonText, BankText;
+        public TurnInfo Turninfo = new TurnInfo(); 
 
-        public enum Season { Winter, Heavy_Winter, Spring, Summer, Heavy_Summer, Fall, Rainy}
+        public Season CurrentSeason { get => Turninfo.CurrentSeason; set => Turninfo.CurrentSeason = value;  }
+        public int TurnNumber { get => Turninfo.TurnNumber; set => Turninfo.TurnNumber = value;  }
 
-        public Season CurrentSeason = Season.Winter;
+        public static TurnManager instance;
+
+        private void Awake()
+        {
+            instance = this; 
+        }
 
         private void Start()
         {
-            SeasonText.text = "Winter";
+            NumberText.text = TurnNumber + "";
+            SeasonText.text = CurrentSeason.ToString();
             BankText.text = FactionManager.instance.PlayerFaction.bank + "";
         }
 

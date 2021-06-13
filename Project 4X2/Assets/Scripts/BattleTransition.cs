@@ -110,7 +110,7 @@ namespace Project4X2
 
         public void ReturnFromBattle()//Army A, Army B)
         {
-            GameManager.Instance.LoadOverworldSceneAfterBattle();
+            GameManager.Instance.LoadOverworldScene();
             PlayerArmy.Units = PABattle;
             EnemyArmy.Units = EABattle; 
         }

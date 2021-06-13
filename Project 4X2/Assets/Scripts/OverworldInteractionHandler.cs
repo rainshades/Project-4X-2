@@ -15,6 +15,7 @@ namespace Project4X2
         {
             OverworldArmy = GetComponentInParent<AttatchedArmy>();
         }
+
         private void OnTriggerEnter(Collider other)
         {
             switch (other.tag){

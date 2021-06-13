@@ -36,7 +36,6 @@ namespace Project4X2
         private void Awake()
         {
             Instance = this;
-            //GameState.Instance.LoadAudoSave();
         }
 
         private void Start()
@@ -76,11 +75,8 @@ namespace Project4X2
 
                             OW.GetComponentInParent<AIPath>().destination = worldPosition;
 
-
                             OW.Ani.SetTrigger("Moving");
-
                         }
-
                     }
 
                     if(CurrentSelection is Settlement)
@@ -142,6 +138,7 @@ namespace Project4X2
             //Where RightClick on Pathfindable Terrain
             //CurrentSelection.Destination
         }
+
         IEnumerator DestroyObject(GameObject gameObject)
         {
             yield return new WaitForSecondsRealtime(1.5f);

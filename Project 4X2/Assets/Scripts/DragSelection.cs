@@ -105,15 +105,18 @@ namespace Project4X2
                 foreach (BattleUnit unit in Selected_Pieces)
                 {
                     go = new GameObject();
+                    go.AddComponent<SpriteRenderer>().sprite = MoveToSprite;
+
                     worldPosition = MouseToTerrainPos();
                     go.transform.position = new Vector3(worldPosition.x + UnitPositionBuffer
-                        , 0.5f, worldPosition.z);
+                        , 1.5f, worldPosition.z);
                     go.transform.eulerAngles = new Vector3(90, 0, 90);
                     StartCoroutine(DestroyDestination(go));
 
                     if (unit.Battle_Started)
                     {
-                        unit.GetComponentInParent<AIPath>().destination = go.transform.position; 
+                        unit.GetComponentInParent<AIPath>().destination = go.transform.position;
+                        unit.Buac.WalkingAnimation(); 
                     }
                     else
                         unit.transform.parent.position = go.transform.position;

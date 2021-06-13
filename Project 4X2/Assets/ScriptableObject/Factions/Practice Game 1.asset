@@ -13,10 +13,13 @@ MonoBehaviour:
   m_Name: Practice Game 1
   m_EditorClassIdentifier: 
   Player: 1
-  bank: 7760
+  bank: 50080
   income: 40
   Enemies: []
   Allies: []
   Territory: []
   PossibleBuildings:
   - {fileID: 11400000, guid: 540cc94122702a1438597158b55c4244, type: 2}
+  RecruitableUnits:
+  - {fileID: 11400000, guid: f00f1c50fc5bcd8408201d37df9af8a5, type: 2}
+  - {fileID: 11400000, guid: e80b320fc864279498a105dcf059e1e4, type: 2}

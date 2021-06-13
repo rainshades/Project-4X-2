@@ -8,7 +8,6 @@ namespace Project4X2
         {
             BuildingSlots = new BuildingSlot[3];
         
-
         }
     }
 }

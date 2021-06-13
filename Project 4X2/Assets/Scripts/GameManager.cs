@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement; 
+using UnityEngine.SceneManagement;
 
 namespace Project4X2
 {
@@ -21,11 +19,27 @@ namespace Project4X2
             DontDestroyOnLoad(this);
         }
 
-        public void LoadOverworld()
+        public void NewGame()
         {
             SceneManager.LoadScene(0);
+            SceneManager.sceneLoaded += LoadNewGame;
+
         }
 
+        private void ContinueGame(Scene arg0, LoadSceneMode arg1)
+        {
+            GameState.Instance.LoadAudoSave();
+            SceneManager.sceneLoaded -= ContinueGame;
+        }
+
+        private void LoadNewGame(Scene scene, LoadSceneMode mode)
+        {
+            foreach(Faction faction in FactionManager.instance.Factions)
+            {
+                faction.NewGame(); 
+            }
+            SceneManager.sceneLoaded -= LoadNewGame; 
+        }
 
         public void LoadBattleScene()
         {
@@ -34,10 +48,10 @@ namespace Project4X2
         }
 
 
-        public void LoadOverworldSceneAfterBattle()
+        public void LoadOverworldScene()
         {
             SceneManager.LoadScene(0);
-            //Battle casualities
+            SceneManager.sceneLoaded += ContinueGame;
         }
     }
 }

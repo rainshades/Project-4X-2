@@ -14,17 +14,8 @@ namespace Project4X2
 
         public int revenue, influence, order, population;
 
-        public Building[] buildings; 
+        public BuildingSO[] buildings = new BuildingSO[0];
 
-        public void SyncBuilding(BuildingSlot[] BuildingSlots)
-        {
-            buildings = new Building[BuildingSlots.Length];
-            int index = 0; 
-            foreach(BuildingSlot bs in BuildingSlots)
-            {
-                buildings[index] = bs.building; 
-            }
-        }
     }
 
     public class Settlement : Clickable
@@ -60,26 +51,31 @@ namespace Project4X2
         
         public BuildingSlot[] BuildingSlots;
 
-        private void Awake()
+        private void Start()
         {
-            int index = 0; 
-            foreach(BuildingSlot bs in BuildingSlots)
-            {
-                bs.building = ThisSettlement.buildings[index];
-            }
+            BM.BuiltBuildings.AddRange(ThisSettlement.buildings);
         }
 
 
         public override void Clicked()
         {
             base.Clicked();
-            OverWorldSelectManager.Instance.CurrentSelection = this; 
-            OverWorldUIController.Instance.SettlementClicked(this);
+            if (tag == "Player")
+            {
+                OverWorldSelectManager.Instance.CurrentSelection = this;
+                OverWorldUIController.Instance.SettlementClicked(this);
+            }
+            else
+            {
+                OverWorldSelectManager.Instance.CurrentSelection = null;
+            }
         }
 
         public void Capture(AttatchedArmy faction)
         {
             ThisSettlement.Owner = faction.Owner;
+            GetComponent<AttatchedArmy>().Owner = faction.Owner;
+            GetComponent<AttatchedArmy>().ArmyNumber = faction.ArmyNumber;
             faction.Combine(GetComponent<AttatchedArmy>().Army);
             Debug.Log("Settlement Captured by" + faction.Owner);
         }

@@ -19,6 +19,13 @@ namespace Project4X2
         public List<BuildingSO> PossibleBuildings;
         public List<BaseRecruitableUnit> RecruitableUnits; 
 
+        public void NewGame()
+        {
+            bank = 50000;
+            Enemies = new List<Faction>();
+            Allies = new List<Faction>();
+        }
+
         public void CalculateIncome()
         {
             foreach(Settlement city in Territory)

@@ -1962,7 +1962,7 @@ MonoBehaviour:
   Factions:
   - {fileID: 11400000, guid: 5d128e2b0e3bf9f41988661c31fa90ad, type: 2}
   - {fileID: 11400000, guid: 12c86aeaf29e4cc40919f3f2d9bed672, type: 2}
-  PlayerFaction: {fileID: 0}
+  PlayerFaction: {fileID: 11400000, guid: 5d128e2b0e3bf9f41988661c31fa90ad, type: 2}
 --- !u!1 &787003688
 GameObject:
   m_ObjectHideFlags: 0
