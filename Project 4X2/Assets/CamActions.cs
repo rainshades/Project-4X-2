@@ -180,6 +180,33 @@ public class @CamActions : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""Shortcuts"",
+            ""id"": ""352b4ea7-2af6-40e2-bf13-3e26e043cbe5"",
+            ""actions"": [
+                {
+                    ""name"": ""OpenSettingsPanel"",
+                    ""type"": ""Button"",
+                    ""id"": ""3c6387d2-fa0a-4243-aead-862fc09f5b46"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""ed0fb73d-5041-4d1e-9e47-615180c570e4"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OpenSettingsPanel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -188,6 +215,9 @@ public class @CamActions : IInputActionCollection, IDisposable
         m_CameraMovement = asset.FindActionMap("CameraMovement", throwIfNotFound: true);
         m_CameraMovement_Movement = m_CameraMovement.FindAction("Movement", throwIfNotFound: true);
         m_CameraMovement_Scroll = m_CameraMovement.FindAction("Scroll", throwIfNotFound: true);
+        // Shortcuts
+        m_Shortcuts = asset.FindActionMap("Shortcuts", throwIfNotFound: true);
+        m_Shortcuts_OpenSettingsPanel = m_Shortcuts.FindAction("OpenSettingsPanel", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -274,9 +304,46 @@ public class @CamActions : IInputActionCollection, IDisposable
         }
     }
     public CameraMovementActions @CameraMovement => new CameraMovementActions(this);
+
+    // Shortcuts
+    private readonly InputActionMap m_Shortcuts;
+    private IShortcutsActions m_ShortcutsActionsCallbackInterface;
+    private readonly InputAction m_Shortcuts_OpenSettingsPanel;
+    public struct ShortcutsActions
+    {
+        private @CamActions m_Wrapper;
+        public ShortcutsActions(@CamActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @OpenSettingsPanel => m_Wrapper.m_Shortcuts_OpenSettingsPanel;
+        public InputActionMap Get() { return m_Wrapper.m_Shortcuts; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(ShortcutsActions set) { return set.Get(); }
+        public void SetCallbacks(IShortcutsActions instance)
+        {
+            if (m_Wrapper.m_ShortcutsActionsCallbackInterface != null)
+            {
+                @OpenSettingsPanel.started -= m_Wrapper.m_ShortcutsActionsCallbackInterface.OnOpenSettingsPanel;
+                @OpenSettingsPanel.performed -= m_Wrapper.m_ShortcutsActionsCallbackInterface.OnOpenSettingsPanel;
+                @OpenSettingsPanel.canceled -= m_Wrapper.m_ShortcutsActionsCallbackInterface.OnOpenSettingsPanel;
+            }
+            m_Wrapper.m_ShortcutsActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @OpenSettingsPanel.started += instance.OnOpenSettingsPanel;
+                @OpenSettingsPanel.performed += instance.OnOpenSettingsPanel;
+                @OpenSettingsPanel.canceled += instance.OnOpenSettingsPanel;
+            }
+        }
+    }
+    public ShortcutsActions @Shortcuts => new ShortcutsActions(this);
     public interface ICameraMovementActions
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnScroll(InputAction.CallbackContext context);
+    }
+    public interface IShortcutsActions
+    {
+        void OnOpenSettingsPanel(InputAction.CallbackContext context);
     }
 }

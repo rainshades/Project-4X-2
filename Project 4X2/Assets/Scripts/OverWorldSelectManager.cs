@@ -40,7 +40,7 @@ namespace Project4X2
 
         private void Start()
         {
-            terrain = Terrain.activeTerrain.GetComponent<TerrainCollider>();
+            terrain = GetComponent<TerrainCollider>();
         }
 
         private void Update()
@@ -50,7 +50,8 @@ namespace Project4X2
 
             if (Mouse.current.rightButton.wasReleasedThisFrame)
             {
-                if(terrain.Raycast(ray, out hitData, 10000))
+
+                if (terrain.Raycast(ray, out hitData, 100000000f))
                 {
                     if (CurrentSelection is OverworldUnit)
                     {
@@ -106,10 +107,10 @@ namespace Project4X2
                             go.transform.eulerAngles = new Vector3(90, 0, 90);
                             OW.Destination.target = go.transform;
                         }
-                    }
+                    } // Creates and moves an army out of a settlement
                 }
 
-                if(Physics.Raycast(ray, out hitData, 1000, EnemyMasks))
+                if (Physics.Raycast(ray, out hitData, 1000, EnemyMasks))
                 {
                     //if Enemy Unit
                     OverworldUnit OW = CurrentSelection as OverworldUnit;

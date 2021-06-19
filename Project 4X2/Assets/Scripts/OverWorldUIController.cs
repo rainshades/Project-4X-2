@@ -9,6 +9,9 @@ namespace Project4X2
         public static OverWorldUIController Instance;
 
         [SerializeField]
+        GameObject SettingsPanel; 
+
+        [SerializeField]
         GameObject BuildingCardPrefab; 
 
         [SerializeField]
@@ -18,10 +21,28 @@ namespace Project4X2
         [SerializeField]
         GameObject BuildingPanel;
 
+        CamActions CamStuff;
+
+        private void OnEnable()
+        {
+            CamStuff.Enable();
+        }
+        private void OnDisable()
+        {
+            CamStuff.Disable();
+        }
+
         void Awake()
         {
+            CamStuff = new CamActions();
             Instance = this;
             SettlementDeck.SetActive(false);
+            CamStuff.Shortcuts.OpenSettingsPanel.performed += OpenSettingsPanel_performed;
+        }
+
+        private void OpenSettingsPanel_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+        {
+            SettingsPanel.SetActive(!SettingsPanel.activeSelf);
         }
 
         public void OpenArmyTab(ArmyUI armyUI)

@@ -19,6 +19,7 @@ namespace Project4X2
         {
             try
             {
+                
                 OverworldUnit OW = OverWorldSelectManager.Instance.CurrentSelection as OverworldUnit;
                 OW.Movement.TurnOffNotifier();
             }

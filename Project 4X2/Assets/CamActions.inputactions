@@ -167,6 +167,33 @@
                     "isPartOfComposite": true
                 }
             ]
+        },
+        {
+            "name": "Shortcuts",
+            "id": "352b4ea7-2af6-40e2-bf13-3e26e043cbe5",
+            "actions": [
+                {
+                    "name": "OpenSettingsPanel",
+                    "type": "Button",
+                    "id": "3c6387d2-fa0a-4243-aead-862fc09f5b46",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "ed0fb73d-5041-4d1e-9e47-615180c570e4",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OpenSettingsPanel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []
